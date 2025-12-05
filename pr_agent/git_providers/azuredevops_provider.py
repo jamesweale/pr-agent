@@ -1,6 +1,6 @@
 import os
 from typing import Optional, Tuple
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
 
 from pr_agent.algo.types import EDIT_TYPE, FilePatchInfo
 
@@ -560,8 +560,8 @@ class AzureDevopsProvider(GitProvider):
         if path_parts[num_parts - 2] != "pullrequest":
             raise ValueError("The provided URL does not follow the expected Azure DevOps PR URL format")
 
-        workspace_slug = path_parts[num_parts - 5]
-        repo_slug = path_parts[num_parts - 3]
+        workspace_slug = unquote(path_parts[num_parts - 5])
+        repo_slug = unquote(path_parts[num_parts - 3])
         try:
             pr_number = int(path_parts[num_parts - 1])
         except ValueError as e:
